@@ -51,14 +51,8 @@ public class FPSOptimizer : MonoBehaviour
             // Increase performance by reducing the number of particles
             for (int i = 0; i < particleSystems.Length; i++)
             {
-                // Set the maximum number of particles to half of the original value
-                ParticleSystem.Particle[] particles = new ParticleSystem.Particle[particleSystems[i].main.maxParticles];
-                int numParticles = particleSystems[i].GetParticles(particles);
-                for (int j = 0; j < numParticles; j++)
-                {
-                    particles[j].remainingLifetime = 0f;
-                }
-                particleSystems[i].SetParticles(particles, Mathf.RoundToInt(originalMaxParticles[i] * 0.5f));
+                var main = particleSystems[i].main;
+                main.maxParticles = Mathf.RoundToInt(originalMaxParticles[i] * 0.5f);
             }
 
             // Increase performance by downgrading shadows
@@ -69,14 +63,8 @@ public class FPSOptimizer : MonoBehaviour
             // Restore the original number of particles
             for (int i = 0; i < particleSystems.Length; i++)
             {
-                // Set the maximum number of particles to the original value
-                ParticleSystem.Particle[] particles = new ParticleSystem.Particle[particleSystems[i].main.maxParticles];
-                int numParticles = particleSystems[i].GetParticles(particles);
-                for (int j = 0; j < numParticles; j++)
-                {
-                    particles[j].remainingLifetime = 0f;
-                }
-                particleSystems[i].SetParticles(particles, Mathf.RoundToInt(originalMaxParticles[i]));
+                var main = particleSystems[i].main;
+                main.maxParticles = originalMaxParticles[i];
             }
 
             // Restore shadows
